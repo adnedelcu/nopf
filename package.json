@@ -1,0 +1,23 @@
+{
+  "name": "nopf",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:adnedelcu/nopf.git",
+  "author": "Alexandru-Daniel Nedelcu <alexnedelcu0@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.1",
+    "mongoose-enumvalues": "^0.0.3"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.2.0"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file=.env index.js"
+  }
+}
