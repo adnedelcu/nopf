@@ -34,6 +34,10 @@ export const update = async (req, res) => {
     throw new ApiError('Property not found', 404);
   }
 
+  if (req.user._id !== property.user._id) {
+    throw new ApiError(`You are not the owner of the property. Please contact ${user.firstName} ${user.lastName} (${user.email}) if you wish to make changes`, 403);
+  }
+
   if (req.body.title) {
     property.title = req.body.title;
   }
@@ -59,7 +63,7 @@ export const update = async (req, res) => {
 };
 
 export const destroy = async (req, res) => {
-  const query = await Property.deleteOne({ _id: req.params.id });
+  const query = await Property.deleteOne({ _id: req.params.id, user: req.user._id });
   if (!query || query.deletedCount == 0) {
     throw new ApiError('Property not found', 404);
   }
