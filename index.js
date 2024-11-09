@@ -7,6 +7,33 @@ import users from './routers/users.js';
 import properties from './routers/properties.js';
 import dependencyInjection from './middleware/dependency-injection.js';
 import tokenValidator from './middleware/token-validator.js';
+import Property, { PropertySchema } from './models/property.js';
+import { faker } from '@faker-js/faker';
+
+if (!Property.findOne()) {
+  const enums = PropertySchema.tree.type.enum;
+  for (let i = 0; i < 100; i++) {
+    const images = [];
+    for (let j = 0; j < faker.number.int({ max: 5 }); j++) {
+      images.push(faker.image.url());
+    }
+    const location = new Property({
+      title: faker.company.name(),
+      description: faker.lorem.sentence(),
+      price: faker.number.float(),
+      type: enums[Math.floor(Math.random() * 3)],
+      images: images,
+      location: {
+        type: 'Point',
+        coordinates: [
+          faker.location.longitude(),
+          faker.location.latitude(),
+        ],
+      },
+    });
+    await location.save();
+  }
+}
 
 const app = express();
 const port = process.env.PORT || 3000;
