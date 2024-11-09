@@ -13,6 +13,7 @@ import { faker } from '@faker-js/faker';
 if (!Property.findOne()) {
   const enums = PropertySchema.tree.type.enum;
   for (let i = 0; i < 100; i++) {
+    console.log(`Creating fake location ${i+1}`);
     const images = [];
     for (let j = 0; j < faker.number.int({ max: 5 }); j++) {
       images.push(faker.image.url());
@@ -32,6 +33,7 @@ if (!Property.findOne()) {
       },
     });
     await location.save();
+    console.log(`Saved fake location ${i+1}`);
   }
 }
 
@@ -40,12 +42,12 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(tokenValidator);
+// app.use(tokenValidator);
 
 app.get('/', (req, res) => res.send('Hello, World!'));
 app.use('/auth', auth);
-app.use('/users', users);
-app.use('/properties', dependencyInjection, properties);
+app.use('/users', tokenValidator, users);
+app.use('/properties', tokenValidator, properties);
 
 app.use(errorHandler);
 
